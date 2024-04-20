@@ -64,3 +64,14 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+
+
+
+```sh
+php artisan eloquent:bulk-phpdoc "app/Models/*.php" --short-class && ./vendor/bin/pint app/Models/
+```
+
+```sh
+php artisan ide-helper:models -n && php artisan ide-helper:generate && ./vendor/bin/pint _ide_helper*
+```
