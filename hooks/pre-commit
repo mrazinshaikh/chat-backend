@@ -1,0 +1,67 @@
+#!/bin/bash
+
+echo "Pre Commit Hook running php lint using laravel/pint ....\n";
+
+# get all the staged files
+# --cached options for staged changes only
+files=$(git diff --cached --name-only --diff-filter=ACMR -- '*.php');
+
+# Only if there php file changes then only run lint and test
+if [ "x$files" != "x" ]; then
+
+#   echo "$files" | grep -q "routes/"
+#   # Check if any staged files are in the routes/ folder
+#   if echo "$files" | grep -q "routes/"; then
+#     echo "Running php artisan scribe:generate since routes/ files have changed..."
+#     php artisan scribe:generate
+#     scribe_exit_code=$?
+
+#     # Check if Scribe generation was successful
+#     if [ "$scribe_exit_code" != 0 ]; then
+#       echo "Scribe generation failed with exit code $scribe_exit_code. Please fix any issues before committing."
+#       exit 1  # Indicate failure to Git
+#     else 
+#       git add .scribe/ resources/views/scribe/
+#     fi
+#   else
+#     echo "Skipping Scribe api docs generation because no change found in route/*"
+#   fi
+
+  # Run php-cs-fixer via laravel/pint
+  vendor/bin/pint $files
+  pint_exit_code=$?
+
+  # echo "Pint exit code: $pint_exit_code"  # Output the exit code
+  # check if pint run successfully and has no errors.
+  if [ "$pint_exit_code" == 1 ]; then
+    echo "Pint failed with exit code $pint_exit_code. Please fix linting errors before committing."
+    exit 1  # Indicate failure to Git
+  fi
+
+
+#   if [ ! -f .env.test ]; then
+#       echo ".env.test file not found. Please create a new test env file otherwise you main database data will be lost."
+#       exit 1
+#   fi
+
+#   echo "Setting up fresh test db using .env.test configuration...."
+
+#   php artisan db:wipe --env=test
+#   php artisan migrate --env=test
+#   php artisan db:seed -n --env=test
+#   # Run Pest tests
+#   php artisan test --env=test
+#   pest_exit_code=$?
+
+#   # echo "PEST exit code: $pest_exit_code"  # Output the exit code
+#   # check if tests run successfully and has no errors.
+#   if [ "$pest_exit_code" == 1 ]; then
+#     echo "Tests failed with exit code $pest_exit_code. Please fix tests before committing."
+#     exit 1  # Indicate failure to Git
+#   fi
+
+  git add $files
+fi
+
+echo "Lint Completed. Committing changes to git...";
+exit 0 # indicating success to Git Commit
