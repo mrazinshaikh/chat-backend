@@ -79,4 +79,28 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    /**
+     * The chats that the user participates in.
+     */
+    public function chats()
+    {
+        return $this->belongsToMany(Chat::class, 'participants');
+    }
+
+    /**
+     * The messages sent by the user.
+     */
+    // public function messages()
+    // {
+    //     return $this->hasMany(Message::class);
+    // }
+
+    /**
+     * Get the user's participants entries, which also contain last read info.
+     */
+    public function participants()
+    {
+        return $this->hasMany(Participant::class);
+    }
 }

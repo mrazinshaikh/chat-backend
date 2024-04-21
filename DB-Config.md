@@ -25,7 +25,7 @@
 - created_at
 - updated_at
 
-# 
+# Participants
 - id (Primary Key)
 - chat_id (Foreign Key from Chats)
 - user_id (Foreign Key from Users)
