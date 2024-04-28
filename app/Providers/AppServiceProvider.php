@@ -3,7 +3,6 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Database\Schema\Blueprint;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -22,12 +21,5 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        /** D in timestampsD stand for defaults */
-        Blueprint::macro('timestampsD', function ($precision = 0) {
-            /** @var Blueprint $this */
-            $this->timestamp('created_at')->useCurrent();
-            $this->timestamp('updated_at')->nullable()->default(null)->useCurrentOnUpdate();
-        });
-
     }
 }
